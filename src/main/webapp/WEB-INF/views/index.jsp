@@ -85,7 +85,24 @@
             Możesz sprawdzić czym się zajmują.</p>
 
         <ul class="help--slides-items">
-            <li>
+
+            <c:forEach var="index" items="${instName}" varStatus="loop">
+                <c:if test="${loop.index % 2 == 0}">
+                    <li>
+                        <div class="col">
+                            <div class="title">${instName[loop.index]}</div>
+                            <div class="subtitle">${instDesc[loop.index]}</div>
+                        </div>
+                        <c:if test="${not loop.last}">
+                            <div class="col">
+                                <div class="title">${instName[loop.index + 1]}</div>
+                                <div class="subtitle">${instDesc[loop.index + 1]}</div>
+                            </div>
+                        </c:if>
+                    </li>
+                </c:if>
+            </c:forEach>
+            <%--<li>
                 <div class="col">
                     <div class="title">Fundacja "Dbam o Zdrowie"</div>
                     <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
@@ -106,8 +123,7 @@
                     <div class="title">Fundacja “Bez domu”</div>
                     <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
                 </div>
-
-            </li>
+            </li>--%>
 
         </ul>
     </div>
