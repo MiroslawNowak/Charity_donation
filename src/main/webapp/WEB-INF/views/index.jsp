@@ -86,7 +86,7 @@
 
         <ul class="help--slides-items">
 
-            <c:forEach var="index" items="${instName}" varStatus="loop">
+            <c:forEach items="${instName}" varStatus="loop">
                 <c:if test="${loop.index % 2 == 0}">
                     <li>
                         <div class="col">
