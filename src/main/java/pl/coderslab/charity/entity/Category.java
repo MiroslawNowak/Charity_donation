@@ -12,14 +12,11 @@ public class Category {
 
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Donation> donations;
     public Category() {
     }
 
-    public Category(String name, List<Donation> donations) {
+    public Category(String name) {
         this.name = name;
-        this.donations = donations;
     }
 
     public void setId(Long id) {
@@ -36,15 +33,6 @@ public class Category {
 
     public Category setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public List<Donation> getDonations() {
-        return donations;
-    }
-
-    public Category setDonations(List<Donation> donations) {
-        this.donations = donations;
         return this;
     }
 }
