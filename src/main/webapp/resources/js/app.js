@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-
   /**
    * Form Select
    */
@@ -106,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function() {
       const $stepForms = form.querySelectorAll("form > div");
       this.slides = [...this.$stepInstructions, ...$stepForms];
 
+      this.donationData = {};
+
       this.init();
     }
 
@@ -125,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$next.forEach(btn => {
         btn.addEventListener("click", e => {
           e.preventDefault();
+          this.saveCurrentStepData();
           this.currentStep++;
           this.updateForm();
         });
@@ -144,18 +146,39 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     /**
+     * Save data from the current step
+     */
+    saveCurrentStepData() {
+      const currentStep = this.currentStep;
+      if (currentStep === 2) {
+        this.donationData.quantity = document.getElementById("quantity").value;
+      }
+      if (currentStep === 3) {
+        const selectedInstitution = document.querySelector(".institution-radio:checked");
+        this.donationData.institution = selectedInstitution ? selectedInstitution.closest("label").querySelector(".title").innerText : "";
+      }
+      if (currentStep === 4) {
+        this.donationData.street = document.getElementById("street").value;
+        this.donationData.city = document.getElementById("city").value;
+        this.donationData.zipCode = document.getElementById("zipCode").value;
+        this.donationData.phone = document.getElementById("phone").value;
+        this.donationData.pickUpDate = document.getElementById("pickUpDate").value;
+        this.donationData.pickUpTime = document.getElementById("pickUpTime").value;
+        this.donationData.pickUpComment = document.getElementById("pickUpComment").value;
+      }
+    }
+
+    /**
      * Update form front-end
      * Show next or previous section etc.
      */
     updateForm() {
       this.$step.innerText = this.currentStep;
 
-      // TODO: Validation
-
       this.slides.forEach(slide => {
         slide.classList.remove("active");
 
-        if (slide.dataset.step === this.currentStep) {
+        if (slide.dataset.step == this.currentStep) {
           slide.classList.add("active");
         }
       });
@@ -163,9 +186,34 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 5;
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
-      // TODO: get data from inputs and show them in summary
+      if (this.currentStep === 5) {
+        this.updateSummary();
+      }
     }
 
+    /**
+     * Update the summary with the collected data
+     */
+    updateSummary() {
+      document.getElementById("summaryQuantity").innerText = `${this.donationData.quantity} worki/ów darów.`;
+      document.getElementById("summaryInstitution").innerText = `Dla fundacji ${this.donationData.institution}`;
+      const address = document.getElementById("summaryAddress");
+      address.children[0].innerText = this.donationData.street;
+      address.children[1].innerText = this.donationData.city;
+      address.children[2].innerText = this.donationData.zipCode;
+      address.children[3].innerText = this.donationData.phone;
+      const pickup = document.getElementById("summaryPickup");
+      pickup.children[0].innerText = this.donationData.pickUpDate;
+      pickup.children[1].innerText = this.donationData.pickUpTime;
+      pickup.children[2].innerText = this.donationData.pickUpComment;
+    }
+
+    /**
+     * Form submission
+     */
+    submit(e) {
+      // Implement any necessary form validation and submission handling here
+    }
   }
   const form = document.querySelector(".form--steps");
   if (form !== null) {
