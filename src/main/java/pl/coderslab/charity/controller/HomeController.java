@@ -22,7 +22,7 @@ public class HomeController {
         this.donationRepository = donationRepository;
     }
 
-    @GetMapping("/home")
+    @GetMapping
     public String homeAction(Model m){
         List<String> instName = institutionRepository.findAllNames();
         List<String> instDesc = institutionRepository.findAllDescription();
